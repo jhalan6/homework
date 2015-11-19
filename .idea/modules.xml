@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/OO/OO.iml" filepath="$PROJECT_DIR$/OO/OO.iml" />
+      <module fileurl="file://$PROJECT_DIR$/software_engineering/build_to_win/build_to_win.iml" filepath="$PROJECT_DIR$/software_engineering/build_to_win/build_to_win.iml" />
+      <module fileurl="file://$PROJECT_DIR$/homework.iml" filepath="$PROJECT_DIR$/homework.iml" />
+      <module fileurl="file://$PROJECT_DIR$/parallel/src/parallel.iml" filepath="$PROJECT_DIR$/parallel/src/parallel.iml" />
+    </modules>
+  </component>
+</project>
