@@ -7,7 +7,7 @@ int helloworld2(char* name){
 }
 int main() {
     pthread_t t;
-    char s[]="liuhui" ;
+    char s[]="chenshenghui" ;
     pthread_create(&t, NULL, (void*)helloworld2, s);
     pthread_join(t, NULL);
     exit (0);
