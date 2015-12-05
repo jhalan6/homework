@@ -3,22 +3,9 @@
 template <class T>
 class AType {
     public:
-<<<<<<< HEAD
         AType(T t=0):key(t){ };
         T operator+(const AType<T>& arg) const{
             return key+arg.getkey();
-=======
-        AType(){
-            key=0;
-        };
-        AType(T t){
-            key=t;
-        };
-        T operator+(const AType<T>& arg) const{
-            //AType<T> temp(key+arg.getkey());
-            return key+arg.getkey();
-            //return temp;
->>>>>>> 276389c2f610e739198f35b72a597260def393f9
         };
         T operator-(const AType<T>& arg) const{
             return key-arg.getkey();
