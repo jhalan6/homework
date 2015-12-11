@@ -1,4 +1,4 @@
-package csh.balls;
+package csh;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,23 +10,19 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class BallFrame extends JPanel {
-	public BallFrame() {
-	}  
-    // 实例化一个数组对象  
-    private Ball[] ball = new Ball[1];  
+    // 实例化一个数组对象
+    private Ball[] ball = new Ball[10];
     // 实例化一个随机数对象  
     private Random r = new Random();  
   
     public static void main(String[] args) {  
         // 实例化一个面板对象  
         BallFrame bf = new BallFrame();  
-        // 调用initUI方法  
-        bf.initUI();  
-    }  
+    }
   
     // 界面函数  
-    public void initUI() {  
-        JFrame jf = new JFrame();// 实例化面板对象  
+    public BallFrame() {
+        JFrame jf = new JFrame();// 实例化面板对象
         jf.setSize(600,600);// 设置面板大小  
         jf.setResizable(false);// 设置不可调节大小  
         jf.setDefaultCloseOperation(3);// 设置关闭按钮  
@@ -50,8 +46,7 @@ public class BallFrame extends JPanel {
   
     // 重写paint方法  
     public void paint(Graphics g) {  
-        // 调用父类的paint方法  
-        super.paint(g);  
+        super.paint(g);
         for (int i = 0; i < ball.length; i++) {  
             // 从ball中获取颜色并设置  
             g.setColor(ball[i].getcolor());  

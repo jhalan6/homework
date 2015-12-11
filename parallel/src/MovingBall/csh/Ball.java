@@ -1,4 +1,4 @@
-package csh.balls;
+package csh;
 
 import java.awt.Color;
 
