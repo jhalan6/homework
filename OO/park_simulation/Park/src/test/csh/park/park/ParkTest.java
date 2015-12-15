@@ -2,7 +2,7 @@ package test.csh.park.park;
 
 import csh.park.park.Park;
 import csh.park.ui.ParkFrame;
-import csh.park.ui.Start;
+import csh.park.data.PublicData;
 import org.junit.Test;
 import org.junit.Before; 
 import org.junit.After;
@@ -24,8 +24,8 @@ public void before() throws Exception {
 public void testPark() throws InterruptedException {
     int a=20;
     int n=a/2;
-    ParkFrame parkFrame=new ParkFrame(new Start());
-    Park park=new Park(a,parkFrame);
+    ParkFrame parkFrame=new ParkFrame(PublicData.getPublicData());
+    Park park=new Park(PublicData.getPublicData());
     for (int x=0;x<5;++x){
         for (int y=1;y<n+1;++y){
                 assertEquals(park.getStatus(x,y),true);

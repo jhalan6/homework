@@ -1,5 +1,7 @@
 package csh.park.warning;
 
+import csh.park.data.PublicData;
+
 /**
  * Created by Alan on 15/12/9.
  */
@@ -10,7 +12,7 @@ public class Message {
     }
     public Message(MessageType messageType) {
         this.messageType = messageType;
-        System.out.println(messageType);
+        PublicData.print.println(messageType);
     }
     public MessageType getMessageType() {
         return messageType;

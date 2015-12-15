@@ -1,18 +1,30 @@
 package csh.park.console;
 
-import csh.park.data.DynamicData;
+import csh.park.data.PublicData;
 
 /**
  * Created by Alan on 15/12/9.
  */
 public class Console {
-    DynamicData dynamicData;
 
-    public Console(DynamicData dynamicData) {
-        this.dynamicData = dynamicData;
+    private final PublicData publicData;
+    private final int maxCar;
+    private int remainCapability;
+
+    public Console(PublicData publicData) {
+        this.publicData = publicData;
+        maxCar=publicData.getConfig().getMaxCar();
+        remainCapability=maxCar;
     }
-    public boolean getLeft(){
-        // TODO: 15/12/10 返回剩余车位数
-        return true;
+    public void carIn(){
+        remainCapability--;
+    }
+    public void carOut(){
+        remainCapability++;
+    }
+
+
+    public int getLeft(){
+        return remainCapability;
     }
 }

@@ -1,7 +1,7 @@
 package csh.park.check;
 
 import csh.park.data.Employee;
-import csh.park.ui.ParkFrame;
+import csh.park.data.PublicData;
 import csh.park.warning.Message;
 
 
@@ -11,10 +11,12 @@ import csh.park.warning.Message;
  */
 public abstract class CheckID extends Thread{
     public final int maxEmployee;
-    protected ParkFrame pf;
-    public CheckID(int maxEmployee, ParkFrame pf) {
-        this.maxEmployee = maxEmployee;
-        this.pf=pf;
+    protected PublicData publicData;
+
+    public CheckID(PublicData publicData) {
+        this.publicData = publicData;
+        maxEmployee= publicData.getConfig().getMaxEmployee();
     }
+
     abstract Message checkEmployee(Employee employee);
 }

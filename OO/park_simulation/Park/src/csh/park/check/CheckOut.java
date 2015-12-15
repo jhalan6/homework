@@ -1,20 +1,25 @@
 package csh.park.check;
 
 import csh.park.data.Employee;
-import csh.park.ui.ParkFrame;
+import csh.park.data.PublicData;
 import csh.park.warning.Message;
 
 /**
  * Created by Alan on 15/12/10.
  */
 public class CheckOut extends CheckID{
-    public CheckOut(int maxEmployee, ParkFrame pf) {
-        super(maxEmployee,pf);
+
+    public CheckOut(PublicData publicData) {
+        super(publicData);
     }
 
     @Override
     public Message checkEmployee(Employee employee) {
-        // TODO: 15/12/10  
+        if (publicData.getEmployeesInPark().contains(employee)) {
+            return new Message(Message.MessageType.ok);
+        }
+//        else if ()
+        // TODO: 15/12/14  
         return null;
     }
 

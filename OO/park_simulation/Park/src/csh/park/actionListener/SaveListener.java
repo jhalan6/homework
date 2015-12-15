@@ -20,10 +20,10 @@ public class SaveListener extends ConfigListener {
     public void actionPerformed(ActionEvent e) {
         SimulationConfig config=new SimulationConfig();
         try {
-            config.setRateOfError(Float.parseFloat(configFrame.getTextRateOfError().getText()));
-            config.setRateOfNotEmployee(Float.parseFloat(configFrame.getTextRateOfNotEmployee().getText()));
-            config.setMaxEmployee(Integer.parseInt(configFrame.getTextMaxEmployee().getText()));
-            config.setMaxCar(Integer.parseInt(configFrame.getTextMaxCar().getText()));
+            config.setRateOfError(Float.parseFloat(configFrame.getTextRateOfError().getText().trim()));
+            config.setRateOfNotEmployee(Float.parseFloat(configFrame.getTextRateOfNotEmployee().getText().trim()));
+            config.setMaxEmployee(Integer.parseInt(configFrame.getTextMaxEmployee().getText().trim()));
+            config.setMaxCar(Integer.parseInt(configFrame.getTextMaxCar().getText().trim()));
         }catch (Exception ee){
             JOptionPane.showMessageDialog(configFrame.getjFrame(),"数据错误!",null,JOptionPane.QUESTION_MESSAGE);
             throw new RuntimeException("数据转换异常!");
