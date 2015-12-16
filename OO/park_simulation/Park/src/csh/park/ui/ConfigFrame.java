@@ -14,28 +14,13 @@ import java.io.*;
  * Created by Alan on 15/12/9.
  */
 public class ConfigFrame extends JPanel{
+
     public JFrame getjFrame() {
         return jFrame;
     }
 
-    public JTextField getTextMaxEmployee() {
-        return textMaxEmployee;
-    }
-
-    public JTextField getTextMaxCar() {
-        return textMaxCar;
-    }
-
-    public JTextField getTextRateOfNotEmployee() {
-        return textRateOfNotEmployee;
-    }
-
-    public JTextField getTextRateOfError() {
-        return textRateOfError;
-    }
-
-    public SimulationConfig getConfig() {
-        return config;
+    public FrameParts getFrameParts(){
+        return frameParts;
     }
 
     JFrame jFrame;
@@ -44,9 +29,12 @@ public class ConfigFrame extends JPanel{
     ActionListener okListener,saveListener;
     SimulationConfig config;
     PublicData publicData;
-    public ConfigFrame(PublicData publicData) {
-        this.publicData = publicData;
-        this.config= publicData.getConfig();
+    FrameParts frameParts;
+
+    public ConfigFrame()
+    {
+        this.publicData = PublicData.getPublicData();
+        config= publicData.getConfig();
         initUI();//初始化UI
     }
 
@@ -72,6 +60,8 @@ public class ConfigFrame extends JPanel{
         jFrame.add(textRateOfError);
         initText();
 
+        frameParts=new FrameParts(textMaxEmployee,textMaxCar,textRateOfNotEmployee,textRateOfError,jFrame);
+
         //初始化两个按钮
         btn_ok=new JButton("确定");
         btn_save=new JButton("保存");
@@ -87,6 +77,7 @@ public class ConfigFrame extends JPanel{
         jFrame.add(btn_ok);
         jFrame.add(btn_save);
 
+
         jFrame.setSize(430,280);
         jFrame.setResizable(false);// 设置不可调节大小
         jFrame.setDefaultCloseOperation(3);// 设置关闭按钮
@@ -99,17 +90,9 @@ public class ConfigFrame extends JPanel{
     }
 
     private void initText() {
-        try {
-            ObjectInputStream input=new ObjectInputStream(new FileInputStream("/tmp/SimulationOfPark.config"));
-            config=(SimulationConfig) input.readObject();
-            System.out.println(config);
-            input.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         textMaxCar.setText(Integer.toString(config.getMaxCar()));
-        textRateOfNotEmployee.setText(Float.toString(config.getRateOfNotEmployee()));
-        textRateOfError.setText(Float.toString(config.getRateOfError()));
+        textRateOfNotEmployee.setText(Double.toString(config.getRateOfNotEmployee()));
+        textRateOfError.setText(Double.toString(config.getRateOfError()));
         textMaxEmployee.setText(Integer.toString(config.getMaxEmployee()));
     }
 }

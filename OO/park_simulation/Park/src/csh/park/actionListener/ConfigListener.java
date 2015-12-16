@@ -1,6 +1,7 @@
 package csh.park.actionListener;
 
 import csh.park.ui.ConfigFrame;
+import csh.park.ui.FrameParts;
 
 import java.awt.event.ActionListener;
 
@@ -9,8 +10,10 @@ import java.awt.event.ActionListener;
  */
 public abstract class ConfigListener implements ActionListener{
     ConfigFrame configFrame;
+    FrameParts frameParts;
 
     public ConfigListener(ConfigFrame configFrame) {
         this.configFrame = configFrame;
+        frameParts=configFrame.getFrameParts();
     }
 }

@@ -13,22 +13,15 @@ import java.io.ObjectOutputStream;
  * Created by Alan on 15/12/10.
  */
 public class SaveListener extends ConfigListener {
+
     public SaveListener(ConfigFrame configFrame) {
         super(configFrame);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SimulationConfig config=new SimulationConfig();
-        try {
-            config.setRateOfError(Float.parseFloat(configFrame.getTextRateOfError().getText().trim()));
-            config.setRateOfNotEmployee(Float.parseFloat(configFrame.getTextRateOfNotEmployee().getText().trim()));
-            config.setMaxEmployee(Integer.parseInt(configFrame.getTextMaxEmployee().getText().trim()));
-            config.setMaxCar(Integer.parseInt(configFrame.getTextMaxCar().getText().trim()));
-        }catch (Exception ee){
-            JOptionPane.showMessageDialog(configFrame.getjFrame(),"数据错误!",null,JOptionPane.QUESTION_MESSAGE);
-            throw new RuntimeException("数据转换异常!");
-        }
+        SimulationConfig config=SimulationConfig.getConfig();
+            config.setSimulationConfig(frameParts);
         try {
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("/tmp/SimulationOfPark.config"));
             output.writeObject(config);

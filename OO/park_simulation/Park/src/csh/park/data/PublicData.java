@@ -33,6 +33,8 @@ public class PublicData extends Thread{
     }
 
     public void initParkFrame() {
+        initPark();
+        initConsole();
         if(parkFrame==null){
             parkFrame=new ParkFrame();
         }else return;
@@ -44,7 +46,7 @@ public class PublicData extends Thread{
         return console;
     }
 
-    public void initConsole() {
+    private void initConsole() {
         if(console==null){
             this.console=new Console();
         }else
@@ -52,38 +54,39 @@ public class PublicData extends Thread{
     }
 
     public SimulationConfig getConfig() {
-        return config;
+        return SimulationConfig.getConfig();
     }
 
     public Park getPark() {
         return park;
     }
 
-    public void setConfig(SimulationConfig config) {
-        this.config = config;
+    private void initConfig() {
+        config=SimulationConfig.getConfig();
     }
 
-    public void initPark() {
+    private void initPark() {
         if(this.park==null)
             this.park = new Park();
         else
             return;
     }
+    public void initConfigFrame(){
+        initConfig();
+        if (configFrame==null){
+            configFrame=new ConfigFrame();
+        } else return;
+    }
     private static PublicData singlePublicData;
     public static PublicData getPublicData() {
        if (singlePublicData==null){
-           try {
                singlePublicData=new PublicData();
-           } catch (InterruptedException e) {
-               e.printStackTrace();
-           }
            return singlePublicData;
        }
         else return singlePublicData;
     }
 
-    private PublicData() throws InterruptedException {
-        config=new SimulationConfig();
+    private PublicData() {
         inError=new ArrayList<Message>();
         outError=new ArrayList<Message>();
         employeesInPark =new ArrayList<Employee>();
@@ -95,7 +98,6 @@ public class PublicData extends Thread{
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        configFrame=new ConfigFrame(this);
     }
 
     public ArrayList<Employee> getEmployeesInPark() {

@@ -7,6 +7,6 @@ import csh.park.data.PublicData;
  */
 public class ToRun {
     public static void main(String[] args) throws InterruptedException {
-        PublicData.getPublicData();
+        PublicData.getPublicData().initConfigFrame();
     }
 }
