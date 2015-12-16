@@ -12,6 +12,7 @@ import java.awt.event.ActionEvent;
  * Created by Alan on 15/12/11.
  */
 public class OkListener extends ConfigListener{
+
     public OkListener(ConfigFrame configFrame) {
         super(configFrame);
     }
@@ -19,7 +20,7 @@ public class OkListener extends ConfigListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         PublicData publicData=PublicData.getPublicData();
-        SimulationConfig config=configFrame.getConfig();
+        SimulationConfig config=publicData.getConfig();
         try {
             config.setMaxCar(Integer.parseInt(configFrame.getTextMaxCar().getText().trim()));
             config.setMaxEmployee(Integer.parseInt(configFrame.getTextMaxEmployee().getText().trim()));

@@ -13,8 +13,8 @@ public abstract class CheckID extends Thread{
     public final int maxEmployee;
     protected PublicData publicData;
 
-    public CheckID(PublicData publicData) {
-        this.publicData = publicData;
+    public CheckID() {
+        this.publicData = PublicData.getPublicData();
         maxEmployee= publicData.getConfig().getMaxEmployee();
     }
 

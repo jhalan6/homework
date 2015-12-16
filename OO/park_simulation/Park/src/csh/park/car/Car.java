@@ -17,10 +17,10 @@ public class Car extends Thread{
     private  final int time;
     private  final int number;
 
-    public Car(Employee outData, Employee inData, PublicData publicData,int time) {
+    public Car(Employee outData, Employee inData,int time) {
         this.outData = outData;
         this.inData = inData;
-        this.publicData=publicData;
+        this.publicData=PublicData.getPublicData();
         this.time=time;
         console=publicData.getConsole();
         park=publicData.getPark();

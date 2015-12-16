@@ -15,8 +15,8 @@ public class ParkFrame extends JPanel {
     int width,height,factor;
     int startX,startY;
     Dimension frameSize;
-    public ParkFrame(PublicData publicData) {
-        this.publicData = publicData;
+    public ParkFrame() {
+        this.publicData = PublicData.getPublicData();
         initFrameSize();
         initFrame();
     }

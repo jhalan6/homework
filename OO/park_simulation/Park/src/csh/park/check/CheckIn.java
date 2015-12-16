@@ -9,9 +9,6 @@ import csh.park.warning.Message;
  */
 public class CheckIn extends CheckID {
 
-    public CheckIn(PublicData publicData) {
-        super(publicData);
-    }
 
     @Override
     public Message checkEmployee(Employee employee) {

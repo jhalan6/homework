@@ -11,8 +11,8 @@ public class Console {
     private final int maxCar;
     private int remainCapability;
 
-    public Console(PublicData publicData) {
-        this.publicData = publicData;
+    public Console() {
+        this.publicData = PublicData.getPublicData();
         maxCar=publicData.getConfig().getMaxCar();
         remainCapability=maxCar;
     }

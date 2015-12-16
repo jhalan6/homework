@@ -17,10 +17,10 @@ public class Park {
     protected CheckOut checkOut;
     protected CarFactory carFactory;
     protected PublicData publicData;
-    public Park(PublicData publicData) {
-        this.publicData = publicData;
+    public Park() {
+        this.publicData = PublicData.getPublicData();
         maxCar = publicData.getConfig().getMaxCar();
-        carFactory=new CarFactory(publicData);
+        carFactory=new CarFactory();
         carFactory.start();
         int n=maxCar/2;
         park=new boolean[5][n+2];//初始化二维数组
@@ -31,8 +31,8 @@ public class Park {
         //将不可停车的部分置为false;
         park[0][0]=park[1][0]=park[3][0]=park[4][0]=false;
         park[0][n+1]=park[1][n+1]=park[3][n+1]=park[4][n+1]=false;
-        checkIn=new CheckIn(publicData);
-        checkOut=new CheckOut(publicData);
+        checkIn=new CheckIn();
+        checkOut=new CheckOut();
     }
     public boolean getStatus(int x,int y){
         return park[x][y];

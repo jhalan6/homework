@@ -34,7 +34,7 @@ public class PublicData extends Thread{
 
     public void initParkFrame() {
         if(parkFrame==null){
-            parkFrame=new ParkFrame(this);
+            parkFrame=new ParkFrame();
         }else return;
     }
 
@@ -46,7 +46,7 @@ public class PublicData extends Thread{
 
     public void initConsole() {
         if(console==null){
-            this.console=new Console(this);
+            this.console=new Console();
         }else
             return;
     }
@@ -65,7 +65,7 @@ public class PublicData extends Thread{
 
     public void initPark() {
         if(this.park==null)
-            this.park = new Park(this);
+            this.park = new Park();
         else
             return;
     }

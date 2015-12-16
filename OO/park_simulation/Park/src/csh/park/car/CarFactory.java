@@ -11,11 +11,10 @@ import java.util.Random;
 public class CarFactory extends Thread{
     Random random;
     PublicData publicData;
-    public CarFactory(PublicData publicData) {
-        this.publicData = publicData;
+    public CarFactory() {
+        this.publicData = PublicData.getPublicData();
         random=new Random();
     }
-
 
     @Override
     public void run() {
@@ -25,7 +24,7 @@ public class CarFactory extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            new Car(nextIn(),nextOut(), publicData,random.nextInt(50000)).start();
+            new Car(nextIn(),nextOut(),random.nextInt(50000)).start();
         }
     }
     private Employee temp;

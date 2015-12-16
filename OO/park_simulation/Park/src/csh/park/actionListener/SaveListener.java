@@ -13,9 +13,10 @@ import java.io.ObjectOutputStream;
  * Created by Alan on 15/12/10.
  */
 public class SaveListener extends ConfigListener {
-    public SaveListener(ConfigFrame configFrame){
+    public SaveListener(ConfigFrame configFrame) {
         super(configFrame);
     }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         SimulationConfig config=new SimulationConfig();

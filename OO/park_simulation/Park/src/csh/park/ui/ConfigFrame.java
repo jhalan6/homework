@@ -38,10 +38,6 @@ public class ConfigFrame extends JPanel{
         return config;
     }
 
-    public PublicData getPublicData() {
-        return publicData;
-    }
-
     JFrame jFrame;
     JTextField textMaxEmployee, textMaxCar,textRateOfNotEmployee,textRateOfError;
     JButton btn_save,btn_ok;

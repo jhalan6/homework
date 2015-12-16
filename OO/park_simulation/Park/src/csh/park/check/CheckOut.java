@@ -9,10 +9,6 @@ import csh.park.warning.Message;
  */
 public class CheckOut extends CheckID{
 
-    public CheckOut(PublicData publicData) {
-        super(publicData);
-    }
-
     @Override
     public Message checkEmployee(Employee employee) {
         if (publicData.getEmployeesInPark().contains(employee)) {

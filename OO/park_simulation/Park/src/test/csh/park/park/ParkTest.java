@@ -24,8 +24,8 @@ public void before() throws Exception {
 public void testPark() throws InterruptedException {
     int a=20;
     int n=a/2;
-    ParkFrame parkFrame=new ParkFrame(PublicData.getPublicData());
-    Park park=new Park(PublicData.getPublicData());
+    ParkFrame parkFrame=new ParkFrame();
+    Park park=new Park();
     for (int x=0;x<5;++x){
         for (int y=1;y<n+1;++y){
                 assertEquals(park.getStatus(x,y),true);
