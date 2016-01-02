@@ -1,49 +1,97 @@
 package csh;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Random;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 
-public class BallFrame extends JPanel {
+public class BallPanel extends JPanel {
     // 实例化一个数组对象
     private Ball[] ball = new Ball[10];
     // 实例化一个随机数对象  
     private Random r = new Random();  
   
     public static void main(String[] args) {  
-        // 实例化一个面板对象  
-        BallFrame bf = new BallFrame();  
+        // 实例化一个面板对象
+        BallPanel bp = new BallPanel();
+        bp.setVisible(true);
+        JFrame jFrame=new JFrame();
+        jFrame.setSize(600,700);
+        jFrame.setVisible(true);
+        jFrame.setLayout(new FlowLayout());
+
+        JPanel pnl_active=new JPanel();
+        pnl_active.setSize(600,600);
+        pnl_active.setMaximumSize(new Dimension(600,600));
+        pnl_active.setMinimumSize(new Dimension(600,600));
+        pnl_active.setVisible(true);
+        pnl_active.add(bp);
+        jFrame.getContentPane().add(pnl_active);
+
+        JButton btn_start,btn_pause;
+        btn_start=new JButton("开始");
+        btn_pause=new JButton("暂停");
+        btn_start.setSize(100,50);
+        btn_pause.setSize(100,50);
+        btn_start.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    pnl_active.setSize(600,600);
+                    System.out.println(pnl_active.getHeight()+"+"+pnl_active.getWidth());
+                    bp.startBalls();
+            }
+        });
+        btn_pause.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                    bp.pauseAndGoOn();
+            }
+        });
+        btn_start.setVisible(true);
+        btn_start.setLocation(50,620);
+        btn_pause.setVisible(true);
+        btn_pause.setLocation(250,620);
+        jFrame.getContentPane().add(btn_start);
+        jFrame.getContentPane().add(btn_pause);
+        pnl_active.setSize(600,600);
+        jFrame.repaint();
+        return;
+
     }
-  
+
+    private void pauseAndGoOn() {
+        for (int i=0;i<ball.length;i++){
+            ball[i].changeStatus();
+        }
+    }
+
     // 界面函数  
-    public BallFrame() {
-        JFrame jf = new JFrame();// 实例化面板对象
-        jf.setSize(600,600);// 设置面板大小  
-        jf.setResizable(false);// 设置不可调节大小  
-        jf.setDefaultCloseOperation(3);// 设置关闭按钮  
-        jf.setLocationRelativeTo(null);// 设置窗体居中  
-        this.setBackground(Color.white);// 设置面板背景为白色  
-        this.setSize(new Dimension(600,570));
-        jf.setVisible(true);// 设置窗体可见  
-        jf.getContentPane().add(this, BorderLayout.CENTER);// 将面板添加到窗体上  
-  
+    public BallPanel() {
+        super();
+        Dimension dimension=new Dimension(600,570);
+        this.setBackground(Color.white);// 设置面板背景为白色
+        this.setSize(dimension);
+        setMinimumSize(dimension);
+        setMaximumSize(dimension);
         for (int i = 0; i < ball.length; i++) {  
             // 实例化每个小球对象  
             ball[i] = new Ball(new Color(r.nextInt(255), r.nextInt(255),  
                     r.nextInt(255)), r.nextInt(550), r.nextInt(550), 50,  
                     r.nextInt(4) + 1, r.nextInt(4) + 1, this, i);  
-        }  
-        for (int i = 0; i < ball.length; i++) {  
-            // 将每个小球线程运行起来  
-            ball[i].start();  
-        }  
-    }  
-  
+        }
+        System.out.println("ballFrame initialed");
+//        startBalls();
+    }
+
+    public void startBalls() {
+        for (int i = 0; i < ball.length; i++) {
+            // 将每个小球线程运行起来
+            ball[i].start();
+        }
+    }
+
     // 重写paint方法  
     public void paint(Graphics g) {  
         super.paint(g);
