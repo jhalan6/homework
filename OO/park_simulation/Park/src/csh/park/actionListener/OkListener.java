@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 /**
  * Created by Alan on 15/12/11.
  */
-public class OkListener extends ConfigListener{
+public class OkListener extends ConfigListener {
 
     public OkListener(ConfigFrame configFrame) {
         super(configFrame);

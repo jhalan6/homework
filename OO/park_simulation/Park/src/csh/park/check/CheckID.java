@@ -17,6 +17,9 @@ public abstract class CheckID extends Thread{
         this.publicData = PublicData.getPublicData();
         maxEmployee= publicData.getConfig().getMaxEmployee();
     }
+    protected boolean contains(Employee employee){
+        return publicData.getEmployeesInPark().contains(employee);
+    }
 
     abstract Message checkEmployee(Employee employee);
 }

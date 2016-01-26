@@ -27,7 +27,6 @@ public class PublicData extends Thread{
         return configFrame;
     }
 
-
     public ParkFrame getParkFrame() {
         return parkFrame;
     }

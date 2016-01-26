@@ -9,10 +9,9 @@ import csh.park.warning.Message;
  */
 public class CheckIn extends CheckID {
 
-
     @Override
     public Message checkEmployee(Employee employee) {
-       if (employee.inEmployeeList(maxEmployee)&&!publicData.getEmployeesInPark().contains(employee)){
+       if (employee.inEmployeeList(maxEmployee)&&!contains(employee)){
            publicData.getEmployeesInPark().add(employee);
            return new Message(Message.MessageType.ok);
        }else{

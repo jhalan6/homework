@@ -11,7 +11,7 @@ public class CheckOut extends CheckID{
 
     @Override
     public Message checkEmployee(Employee employee) {
-        if (publicData.getEmployeesInPark().contains(employee)) {
+        if (contains(employee)) {
             return new Message(Message.MessageType.ok);
         }
 //        else if ()
