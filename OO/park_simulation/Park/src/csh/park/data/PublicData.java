@@ -13,8 +13,10 @@ import java.util.ArrayList;
 
 /**
  * Created by Alan on 15/12/9.
+ * 这个类用单例式管理一组数据,这组数据由于其一经配置不再改变,所以改为公共数据,所有类都可以访问,甚至留有对其的引用
  */
 public class PublicData extends Thread{
+    public static final int midTime=100;
     SimulationConfig config;
     Park park;
     Console console;
@@ -27,6 +29,10 @@ public class PublicData extends Thread{
         return configFrame;
     }
 
+    /**
+     * 停车场的布局通过这个方法进行传递,减少了参数数量
+     * @return
+     */
     public ParkFrame getParkFrame() {
         return parkFrame;
     }
@@ -48,8 +54,7 @@ public class PublicData extends Thread{
     private void initConsole() {
         if(console==null){
             this.console=new Console();
-        }else
-            return;
+        }
     }
 
     public SimulationConfig getConfig() {
@@ -109,5 +114,9 @@ public class PublicData extends Thread{
 
     public ArrayList<Message> getInError() {
         return inError;
+    }
+
+    public int getN() {
+        return park.getHalfMax();
     }
 }

@@ -1,5 +1,6 @@
 package csh.park.warning;
 
+import csh.park.car.Car;
 import csh.park.data.PublicData;
 
 /**
@@ -7,12 +8,17 @@ import csh.park.data.PublicData;
  */
 public class Message {
     protected MessageType messageType;
-    public enum MessageType {
-        not_found_in_system,not_found_in_register,ok
+    protected Car car;
+
+    public Car getCar() {
+        return car;
     }
-    public Message(MessageType messageType) {
+
+    public enum MessageType { not_found_in_system,not_found_in_register,ok}
+    public Message(MessageType messageType,Car car) {
         this.messageType = messageType;
         PublicData.print.println(messageType);
+        this.car=car;
     }
     public MessageType getMessageType() {
         return messageType;
