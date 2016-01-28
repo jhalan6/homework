@@ -32,22 +32,6 @@ public class CheckIn extends CheckID {
        }
     }
 
-//    private void openDoor() {
-//        try {
-//            doorStatus= DoorStatus.yes;
-//            sleep(PublicData.midTime);
-//            barStatus= BarStatus.half;
-//            publicData.getParkFrame().repaint();
-//            sleep(PublicData.midTime);
-//            barStatus= BarStatus.open;
-//            doorStatus= DoorStatus.nothing;
-//            publicData.getParkFrame().repaint();
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
-
-
     @Override
     public void run() {
         super.run();

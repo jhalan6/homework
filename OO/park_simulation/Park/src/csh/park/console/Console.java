@@ -5,6 +5,8 @@ import csh.park.check.CheckIn;
 import csh.park.check.CheckOut;
 import csh.park.data.PublicData;
 
+import static csh.park.data.PublicData.*;
+
 /**
  * Created by Alan on 15/12/9.
  */
@@ -18,22 +20,6 @@ public class Console extends Thread {
     private long totalTime = 0;
     private long totalCar = 0;
     private long relativeTime = 0;
-
-//    @Override
-//    public void run() {
-//        super.run();
-//        try {
-//            sleep(60*PublicData.midTime);
-//            relativeTime++;
-//            System.out.println("第"+relativeTime+"次定时报告:");
-//            System.out.println("\t截止目前本次仿真累计入场车数"+totalCar);
-//            System.out.println("\t截止目前本次仿真累计出场车数"+(totalCar-10+remainCapability));
-//            System.out.println("\t截至目前本次仿真汽车的平均停车时间"+totalTime/(totalCar*PublicData.midTime));
-//            PublicData.print.println(relativeTime);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     public Console() {
         this.publicData = PublicData.getPublicData();
@@ -50,16 +36,22 @@ public class Console extends Thread {
                         sleep(PublicData.midTime);
                         relativeTime++;
                         publicData.getParkFrame().repaint();
-                        if (relativeTime / 60 == 0) {
-                            System.out.println("第" + relativeTime + "次定时报告:");
-                            System.out.println("\t截止目前本次仿真累计入场车数" + totalCar);
-                            System.out.println("\t截止目前本次仿真累计出场车数" + (totalCar - 10 + remainCapability));
+                        if (relativeTime % 60 == 0) {
+                            System.out.println("第" + relativeTime /60+ "次定时报告:");
+                            System.out.println("\t截止目前本次仿真累计入场车数:" + totalCar);
+                            System.out.println("\t截止目前本次仿真累计出场车数:" + (totalCar - 10 + remainCapability));
                             if (totalCar!=0)
-                                System.out.println("\t截至目前本次仿真汽车的平均停车时间" + totalTime / (totalCar * PublicData.midTime));
+                                System.out.println("\t截至目前本次仿真汽车的平均停车时间" + totalTime / (totalCar * PublicData.midTime)+"s");
                             else
                                 System.out.println("\t截至目前本次仿真汽车的平均停车时间"+0);
+                            print.println("第" + relativeTime /60+ "次定时报告:");
+                            print.println("\t截止目前本次仿真累计入场车数:" + totalCar);
+                            print.println("\t截止目前本次仿真累计出场车数:" + (totalCar - 10 + remainCapability));
+                            if (totalCar!=0)
+                                print.println("\t截至目前本次仿真汽车的平均停车时间" + totalTime / (totalCar * PublicData.midTime)+"s");
+                            else
+                                print.println("\t截至目前本次仿真汽车的平均停车时间"+0);
                         }
-                        PublicData.print.println(relativeTime);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }

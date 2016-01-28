@@ -20,9 +20,11 @@ public class RearWorker extends Worker {
                 sleep(5 * publicData.midTime);
                 if (!arrayList.isEmpty()) {
                     Message message = arrayList.get(0);
-                    message.getCar().handle();
+                    if (message.getCar().atParkLocation()) {
+                        message.getCar().handle();
 //                    PublicData.print.println("干活了干活了!");
-                    arrayList.remove(message);
+                        arrayList.remove(message);
+                    }
                 }
 // else PublicData.print.println("没活干没活干!");
             } catch (InterruptedException e) {

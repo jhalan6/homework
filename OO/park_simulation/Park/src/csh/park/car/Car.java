@@ -4,6 +4,7 @@ import csh.park.console.Console;
 import csh.park.data.Employee;
 import csh.park.park.Park;
 import csh.park.data.PublicData;
+import static csh.park.data.PublicData.print;
 
 /**
  * Created by Alan on 15/12/9.
@@ -44,47 +45,62 @@ public class Car extends Thread{
         carGoTo(2,1);
         if (console.getLeft()>0&&park.in(this)){
             parkingCar();//停车找车位
-            PublicData.print.println("汽车"+number+"在停车场内,将要停"+time+"毫秒");
+//            print.println("汽车"+number+"在停车场内,将要停"+time%PublicData.midTime+"秒");
             mySleep(time);
             reverseCar();
-            PublicData.print.println("汽车"+number+"将要驶出停车场");
+//            print.println("汽车"+number+"将要驶出停车场");
             moveToRearDoor();
             if(park.out(this)){
                 leavePark();
             }else {
-                reverseCar();
-                line=carHeadY;
-                while(!park.getStatus(1,line)&&!park.getStatus(3,line)){
-                    line--;
-                    carGoTo(2,line);
-                }
-                if (park.getStatus(1,line)){
-                    carGoTo(1,line);
-                    mySleep(PublicData.midTime);
-                    carGoTo(0,line);
-                }else {
-                    carGoTo(3,line);
-                    mySleep(PublicData.midTime);
-                    carGoTo(4,line);
-                }
-                while (true){
-                    mySleep(PublicData.midTime);
-                    if (beenHandled){
-                        moveToRearDoor();
-                        if (park.out(this)){
-                            leavePark();
-                        }
-                    }
-                }
+                backToPark();
+                waitHandleAndOut();
             }
         }else {
             carCanNotIn();
         }
     }
 
-    private void leavePark() {
-        while (line<publicData.getN()+6){
+    private void waitHandleAndOut() {
+        while (true){
+            mySleep(PublicData.midTime);
+            if (beenHandled){
+                moveToRearDoor();
+                if (park.out(this)){
+                    reverseCar();
+                    leavePark();
+                }
+            }
+        }
+    }
+
+    private void backToPark() {
+        reverseCar();
+        line=carHeadY;
+        while(!park.getStatus(1,line)&&!park.getStatus(3,line)){
+            line--;
             carGoTo(2,line);
+        }
+        if (park.getStatus(1,line)){
+            carGoTo(1,line);
+            mySleep(PublicData.midTime);
+            carGoTo(0,line);
+        }else {
+            carGoTo(3,line);
+            mySleep(PublicData.midTime);
+            carGoTo(4,line);
+        }
+    }
+
+    private void leavePark() {
+        line=carHeadY+1;
+        while (line<publicData.getN()+6){
+            try {
+                carGoTo(2,line);
+            }catch (ArrayIndexOutOfBoundsException e){
+                print.println(e);
+                print.println("line="+line);
+            }
             line++;
         }
         line--;
@@ -103,10 +119,10 @@ public class Car extends Thread{
     }
 
     private void moveToRearDoor() {
+        line=carHeadY;
         carGoTo(2,line);
-        line+=1;
-        carGoTo(2,line);
-        line+=1;
+        line++;
+        mySleep(PublicData.midTime);
         while (line<publicData.getN()+4){
             carGoTo(2,line);
             line++;
@@ -114,7 +130,7 @@ public class Car extends Thread{
     }
 
     private void carCanNotIn() {
-        PublicData.print.println("汽车"+number+"无法进入停车场而离开");
+//        print.println("汽车"+number+"无法进入停车场而离开");
         carGoTo(3,1);
         carGoTo(4,1);
         mySleep(PublicData.midTime);
@@ -131,7 +147,7 @@ public class Car extends Thread{
     }
 
     private void parkingCar() {
-        PublicData.print.println("汽车"+number+"进入停车场停车");
+//        print.println("汽车"+number+"进入停车场停车");
         carGoTo(2,2);
         while (true){
             if (line==3){
@@ -189,7 +205,7 @@ public class Car extends Thread{
             publicData.getParkFrame().repaint();
             return true;
         }else {
-            PublicData.print.println(number+"号车想要到达"+"\tX="+x+"\tY="+y+"但并没有");
+//            print.println(number+"号车想要到达"+"\tX="+x+"\tY="+y+"但并没有");
             return false;
         }
     }
@@ -210,7 +226,7 @@ public class Car extends Thread{
         while(true){
             mySleep(PublicData.midTime);
             if (carUIGoTO(x,y)) {
-                PublicData.print.println(number+"号车到达"+"\tX="+x+"\tY="+y);
+//                print.println(number+"号车到达"+"\tX="+x+"\tY="+y);
                 break;
             }
         }
@@ -232,5 +248,11 @@ public class Car extends Thread{
     }
     public boolean isHandled(){
         return beenHandled;
+    }
+
+    public boolean atParkLocation() {
+        if (carTailX==0||carTailX==4||carHeadX==0||carHeadX==4){
+            return true;
+        }else return false;
     }
 }
