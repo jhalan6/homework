@@ -23,7 +23,14 @@ public class RearWorker extends Worker {
                     if (message.getCar().atParkLocation()) {
                         message.getCar().handle();
 //                    PublicData.print.println("干活了干活了!");
-                        arrayList.remove(message);
+                        try {
+                            synchronized (message.getCar()){
+                                message.getCar().notify();
+                                arrayList.remove(message);
+                            }
+                        }catch (Exception e){
+                            System.err.println(e);
+                        }
                     }
                 }
 // else PublicData.print.println("没活干没活干!");

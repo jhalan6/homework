@@ -76,7 +76,14 @@ public class Park {
      * @return 可以停车为true,不可以停车为false
      */
     public boolean getStatus(int x,int y){
-        return park[x][y];
+        try {
+            return park[x][y];
+        }catch (Exception e){
+            PublicData.print.println("x="+x+"\ty="+y);
+            PublicData.print.println(e);
+        }finally {
+            return park[x][y];
+        }
     }
 
     /**

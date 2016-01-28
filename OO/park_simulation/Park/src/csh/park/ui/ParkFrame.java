@@ -1,6 +1,5 @@
 package csh.park.ui;
 
-import csh.park.check.CheckID;
 import csh.park.check.CheckIn;
 import csh.park.check.CheckOut;
 import csh.park.console.Console;
@@ -38,6 +37,9 @@ public class ParkFrame extends JPanel {
         jFrame.getContentPane().add(this, BorderLayout.CENTER);// 将面板添加到窗
     }
 
+    /**
+     * 对界面的大小进行初始化设置
+     */
     private void initFrameSize() {
         startX=15;
         startY=10;
@@ -70,18 +72,22 @@ public class ParkFrame extends JPanel {
         drawConsole(g);
     }
 
+    /**
+     * 绘制控制台上的文字信息,包括当前时间,当前剩余车位数量,前后门状态等信息.
+     * @param g 用Graphics完成绘制
+     */
     private void drawConsole(Graphics g) {
         Console console=publicData.getConsole();
         int consoleStartX=startX+2*factor,consoleStartY=(int) (startY+0.5*factor);
         g.drawString(console.frontDoorToString(),consoleStartX,consoleStartY);
         g.drawString(console.capabilityToString(),consoleStartX+factor*(publicData.getN()/2+1),consoleStartY);
         g.drawString(console.rearDoorToString(),consoleStartX+factor*(publicData.getN()+2),consoleStartY);
-        g.drawString(console.relativeTimeTOString(),consoleStartX-2*factor,consoleStartY);
+        g.drawString(console.relativeTimeToString(),consoleStartX-2*factor,consoleStartY);
     }
 
     /**
-     * 绘制前后两个门禁
-     * @param g 用Graphics完成绘制,总共包括四条短线\两个可伸缩的门
+     * 绘制前后两个门禁,总共包括四条短线\两个可伸缩的门
+     * @param g 用Graphics完成绘制
      */
     private void drawBar(Graphics g) {
         //半条短线的长度
@@ -150,7 +156,12 @@ public class ParkFrame extends JPanel {
             }
         }
     }
-    private void showCopy(boolean[][] parkCopy) {//调试用的,缩小的停车场表示方式
+
+    /**
+     * 调试用的,缩小的停车场表示方式
+     * @param parkCopy 一个停车场小模型二维数组
+     */
+    private void showCopy(boolean[][] parkCopy) {
         for (boolean[] b:parkCopy){
             for (boolean c:b){
                 publicData.print.print(c +"\t");
