@@ -23,11 +23,33 @@ public class Car extends Thread {
     private final PublicData publicData;
     private final Console console;
     private final int time;
+
+    public int getNumber() {
+        return number;
+    }
+
     private final int number;
     private int carTailX;
     private int carTailY;
     private int carHeadX;
     private int carHeadY;
+
+    public int getCarTailX() {
+        return carTailX;
+    }
+
+    public int getCarTailY() {
+        return carTailY;
+    }
+
+    public int getCarHeadX() {
+        return carHeadX;
+    }
+
+    public int getCarHeadY() {
+        return carHeadY;
+    }
+
     private int line = 2;
     private boolean beenHandled = false;
     private int conflictCount;
@@ -92,6 +114,14 @@ public class Car extends Thread {
             if ((line < publicData.getN() + 3) && !park.getStatus(1, line) && !park.getStatus(3, line)) {
                 line += 1;
                 if (!carGoTo(2, line)) {
+                    while (line==3||line==2){
+                        while (line==2){
+                            carGoTo(2,line);
+                            ++line;
+                        }
+                        if (carGoTo(2,line))
+                            ++line;
+                    }
                     backToPark();
                 }
             } else break;
@@ -182,7 +212,8 @@ public class Car extends Thread {
     private void backToPark() {
         if (carHeadY == carTailY) {//车只走出车库一格,退回去就好
             reverseCar();
-            carGoTo(carHeadX - (carTailX - carHeadX), carHeadY);
+            int temp=carHeadX - (carTailX - carHeadX);
+            carGoTo(temp>=0?temp:0, carHeadY);
             return;
         }
         while (true) {
@@ -251,7 +282,7 @@ public class Car extends Thread {
     }
 
     private void exponentialBackoff() {
-        mySleep((random.nextInt(2 ^ conflictCount) % 300) * midTime);
+        mySleep((random.nextInt(3^conflictCount) % 600) * midTime);
     }
 
     /**
@@ -403,7 +434,7 @@ public class Car extends Thread {
     }
 
     public boolean atParkLocation() {
-        if (carTailX == 0 || carTailX == 4 || carHeadX == 0 || carHeadX == 4) {
+        if (carHeadX == 0 || carHeadX == 4) {
             return true;
         } else return false;
     }

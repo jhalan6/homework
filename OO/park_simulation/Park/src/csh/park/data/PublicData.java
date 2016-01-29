@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * 这个类用单例式管理一组数据,这组数据由于其一经配置不再改变,所以改为公共数据,所有类都可以访问,甚至留有对其的引用
  */
 public class PublicData extends Thread{
-    public static final int midTime=100;
+    public static final int midTime=50;
     SimulationConfig config;
     Park park;
     Console console;

@@ -32,6 +32,11 @@ public class Park {
     protected CarFactory carFactory;
     protected PublicData publicData;
     private int halfMax;
+
+    public ArrayList<Car> getCarsInPark() {
+        return carsInPark;
+    }
+
     private ArrayList<Car> carsInPark;
     public Park() {
         carsInPark=new ArrayList<Car>();

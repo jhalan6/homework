@@ -32,7 +32,8 @@ public class CarFactory extends Thread{
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            new Car(nextIn(),nextOut(),random.nextInt(300*PublicData.midTime)).start();
+            if (publicData.getPark().getStatus(0,0)&&publicData.getPark().getStatus(1,0))
+                new Car(nextIn(),nextOut(),random.nextInt(300*PublicData.midTime)).start();
         }
     }
     private Employee temp;

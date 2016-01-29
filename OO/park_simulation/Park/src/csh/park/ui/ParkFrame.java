@@ -1,5 +1,6 @@
 package csh.park.ui;
 
+import csh.park.car.Car;
 import csh.park.check.CheckIn;
 import csh.park.check.CheckOut;
 import csh.park.console.Console;
@@ -70,6 +71,17 @@ public class ParkFrame extends JPanel {
         drawFromCopy(parkCopy,g);
         drawBar(g);
         drawConsole(g);
+        drawCarNumber(g);
+    }
+
+    private void drawCarNumber(Graphics g) {
+        int startXofParkArea = startX;
+        int startYofParkArea = startY + factor;
+        for (Car car:publicData.getPark().getCarsInPark()){
+            int relativeX=(int) (((float)(car.getCarHeadX()+car.getCarTailX()+1)/2)*factor);
+            int relativeY=(int) (((float)(car.getCarHeadY()+car.getCarTailY()+1)/2)*factor);
+            g.drawString(Integer.toString(car.getNumber()),startXofParkArea+relativeY,startYofParkArea+relativeX);
+        }
     }
 
     /**
