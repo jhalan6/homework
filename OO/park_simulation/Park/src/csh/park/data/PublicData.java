@@ -16,7 +16,6 @@ import java.util.ArrayList;
  * 这个类用单例式管理一组数据,这组数据由于其一经配置不再改变,所以改为公共数据,所有类都可以访问,甚至留有对其的引用
  */
 public class PublicData extends Thread{
-    public static final int midTime=50;
     SimulationConfig config;
     Park park;
     Console console;
@@ -24,11 +23,9 @@ public class PublicData extends Thread{
     ArrayList<Employee> employeesInPark;
     ConfigFrame configFrame;
     ParkFrame parkFrame;
-
-    public ConfigFrame getConfigFrame() {
-        return configFrame;
+    public static void main(String[] args){
+        getPublicData().initConfigFrame();
     }
-
     /**
      * 停车场的布局通过这个方法进行传递,减少了参数数量
      * @return
@@ -44,8 +41,6 @@ public class PublicData extends Thread{
             parkFrame=new ParkFrame();
         }else return;
     }
-
-    public static PrintStream print;//系统控制台输出
 
     public Console getConsole() {
         return console;
@@ -94,9 +89,9 @@ public class PublicData extends Thread{
         inError=new ArrayList<Message>();
         outError=new ArrayList<Message>();
         employeesInPark =new ArrayList<Employee>();
-        print=System.out;
         File outputFile= null;
         try {
+            //这里windows肯定不是这么写的
             outputFile = new File("//tmp//Simulation.log");
             System.setOut(new PrintStream(outputFile));
         } catch (FileNotFoundException e) {

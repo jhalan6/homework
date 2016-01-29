@@ -8,18 +8,34 @@ import java.util.ArrayList;
 /**
  * Created by Alan on 15/12/14.
  */
-public abstract class Worker extends Thread{
-    protected ArrayList<Message> arrayList;
+public class Worker extends Thread{
+    protected ArrayList<Message> arrayList,arrayList1;
     protected PublicData publicData;
-    public Worker(ArrayList<Message> arrayList){
+    public Worker(ArrayList<Message> arrayList,ArrayList<Message> arrayList1){
         this.arrayList=arrayList;
         publicData=PublicData.getPublicData();
+        this.arrayList1=arrayList1;
     }
     @Override
     public void run() {
         super.run();
-        work();
-    }
+        while (true){
+            try {
+                sleep(5000);
+                if (!arrayList.isEmpty()) {
+                    Message message = arrayList.get(0);
+                    message.getCar().handle();
+                    arrayList.remove(message);
+                }
 
-    protected abstract void work();
+                if (!arrayList1.isEmpty()){
+                    Message message=arrayList1.get(0);
+                    arrayList1.remove(message);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
 }

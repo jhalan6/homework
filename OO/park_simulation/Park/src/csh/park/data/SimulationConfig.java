@@ -22,7 +22,7 @@ public class SimulationConfig implements Serializable{
                 return singleConfig;
             } catch (Exception e) {
                 singleConfig=new SimulationConfig(10,10,0.1,0.1);
-                PublicData.print.println("未能找到之前保存的信息,已用系统内置数据进行初始化");
+                System.err.println("未能找到之前保存的信息,已用系统内置数据进行初始化");
                 return singleConfig;
             }
         }else return singleConfig;

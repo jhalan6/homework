@@ -8,10 +8,16 @@ import csh.park.warning.Message;
 /**
  * Created by Alan on 15/12/10.
  */
-public class CheckIn extends CheckID {
+public class CheckIn extends Thread{
 
-    @Override
+    public int maxEmployee;
+    protected PublicData publicData;
+    protected BarStatus barStatus= BarStatus.close;
+    protected DoorStatus doorStatus= DoorStatus.nothing;
+
     public Message checkEmployee(Car car) {
+        this.publicData = PublicData.getPublicData();
+        maxEmployee= publicData.getConfig().getMaxEmployee();
         Employee employee=car.getInData();
        if (employee.inEmployeeList(maxEmployee)&&!contains(employee)){
            publicData.getEmployeesInPark().add(employee);
@@ -21,7 +27,7 @@ public class CheckIn extends CheckID {
            try {
                doorStatus=DoorStatus.no;
                publicData.getParkFrame().repaint();
-               sleep(PublicData.midTime);
+               sleep(1000);
                doorStatus=DoorStatus.nothing;
                publicData.getParkFrame().repaint();
            } catch (InterruptedException e) {
@@ -32,8 +38,45 @@ public class CheckIn extends CheckID {
        }
     }
 
-    @Override
-    public void run() {
-        super.run();
+    public void carHadBeenIn() {
+        try {
+            sleep(1000);
+            barStatus= BarStatus.half;
+            publicData.getParkFrame().repaint();
+            sleep(1000);
+            barStatus= BarStatus.close;
+            publicData.getParkFrame().repaint();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
+
+    protected void openDoor() {
+        try {
+            doorStatus= DoorStatus.yes;
+            sleep(1000);
+            barStatus= BarStatus.half;
+            publicData.getParkFrame().repaint();
+            sleep(1000);
+            barStatus= BarStatus.open;
+            doorStatus= DoorStatus.nothing;
+            publicData.getParkFrame().repaint();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public BarStatus getBarStatus() {
+        return barStatus;
+    }
+
+    public DoorStatus getDoorStatus(){return doorStatus;}
+
+    protected boolean contains(Employee employee){
+        return publicData.getEmployeesInPark().contains(employee);
+    }
+
+    public enum BarStatus {open,half, close}
+
+    public enum DoorStatus{yes,no,nothing}
 }

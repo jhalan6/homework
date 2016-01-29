@@ -2,14 +2,11 @@ package csh.park.car;
 
 import csh.park.console.Console;
 import csh.park.data.Employee;
-import csh.park.data.LocationOfPark;
 import csh.park.park.Park;
 import csh.park.data.PublicData;
 
 import java.util.*;
 
-import static csh.park.data.PublicData.midTime;
-import static csh.park.data.PublicData.print;
 
 /**
  * Car类是一个车辆的表示方法,继承了线程类,用多线程技术完成每一辆车的控制,在run方法中完成车辆的种种行为,进入停车场,校验员工,泊车,出停车场
@@ -65,7 +62,13 @@ public class Car extends Thread {
         number = count++;
         conflictCount = 0;
         random = new Random();
-        initCarUI();
+        carTailX = 0;
+        carTailY = 0;
+        carHeadX = 1;
+        carHeadY = 0;
+        park.setStatusFalse(carTailX, carTailY);
+        park.setStatusFalse(carHeadX, carHeadY);
+        publicData.getParkFrame().repaint();
     }
 
     @Override
@@ -76,7 +79,11 @@ public class Car extends Thread {
         if (console.getLeft() > 0 && park.in(this)) {
             parkingCar();//停车找车位
 //            print.println("汽车"+number+"在停车场内,将要停"+time%PublicData.midTime+"秒");
-            mySleep(time);
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 //            print.println("汽车"+number+"将要驶出停车场");
             while (!moveToRearDoor()) {
                 exponentialBackoff();
@@ -102,24 +109,18 @@ public class Car extends Thread {
         while (true) {
             //为了避免进程阻塞,用新线程通知停车场,车辆已经进入停车场
             if (line == 3) {
-                new Thread() {
-                    @Override
-                    public void run() {
-                        super.run();
-                        park.carHadBeenIn();
-                    }
-                }.start();
+                park.carHadBeenIn();
             }
             //如果没有车位就向前一格看下一格的车位状况
             if ((line < publicData.getN() + 3) && !park.getStatus(1, line) && !park.getStatus(3, line)) {
                 line += 1;
                 if (!carGoTo(2, line)) {
-                    while (line==3||line==2){
-                        while (line==2){
-                            carGoTo(2,line);
+                    while (line == 3 || line == 2) {
+                        while (line == 2) {
+                            carGoTo(2, line);
                             ++line;
                         }
-                        if (carGoTo(2,line))
+                        if (carGoTo(2, line))
                             ++line;
                     }
                     backToPark();
@@ -131,12 +132,20 @@ public class Car extends Thread {
         if (park.getStatus(1, line)) {//这里是上方的车位
             carGoTo(1, line);
             //进车位要花两个单位时间
-            mySleep(PublicData.midTime);
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             carGoTo(0, line);
         } else if (park.getStatus(3, line)) {                     //这里是下方的车位
             carGoTo(3, line);
             //进车位要花两个单位时间
-            mySleep(PublicData.midTime);
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             carGoTo(4, line);
         } else {
             backToPark();
@@ -147,11 +156,20 @@ public class Car extends Thread {
      * 当车辆无法进入停车场时,就让车辆按照固定的顺序离开停车场
      */
     private void carCanNotIn() {
-//        print.println("汽车"+number+"无法进入停车场而离开");
+        System.err.println("汽车" + number + "无法进入停车场而离开");
         carGoTo(3, 1);
         carGoTo(4, 1);
-        mySleep(PublicData.midTime);
-        dropCar();
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        park.setStatusTrue(carHeadX, carHeadY);
+        park.setStatusTrue(carTailX, carTailY);
+        carHeadX = -1;
+        carHeadY = -1;
+        carTailX = -1;
+        carTailY = -1;
         publicData.getParkFrame().repaint();
     }
 
@@ -166,7 +184,11 @@ public class Car extends Thread {
             line = carHeadY;
         }
         line++;
-        mySleep(PublicData.midTime);
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         while (line < publicData.getN() + 4) {
             if (!carGoTo(2, line)) {
                 backToPark();
@@ -186,23 +208,26 @@ public class Car extends Thread {
             try {
                 carGoTo(2, line);
             } catch (ArrayIndexOutOfBoundsException e) {
-                print.println(e);
-                print.println("line=" + line);
+                System.err.println(e);
+                System.err.println("line=" + line);
             }
             line++;
         }
         line--;
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                park.carHadBeenOut();
-            }
-        }.start();
+        park.carHadBeenOut();
         carGoTo(3, line);
         carGoTo(4, line);
-        mySleep(PublicData.midTime);
-        dropCar();
+        try {
+            sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        park.setStatusTrue(carHeadX, carHeadY);
+        park.setStatusTrue(carTailX, carTailY);
+        carHeadX = -1;
+        carHeadY = -1;
+        carTailX = -1;
+        carTailY = -1;
         publicData.getParkFrame().repaint();
     }
 
@@ -212,8 +237,8 @@ public class Car extends Thread {
     private void backToPark() {
         if (carHeadY == carTailY) {//车只走出车库一格,退回去就好
             reverseCar();
-            int temp=carHeadX - (carTailX - carHeadX);
-            carGoTo(temp>=0?temp:0, carHeadY);
+            int temp = carHeadX - (carTailX - carHeadX);
+            carGoTo(temp >= 0 ? temp : 0, carHeadY);
             return;
         }
         while (true) {
@@ -240,11 +265,19 @@ public class Car extends Thread {
 //        }
 //        if (park.getStatus(1,line)){
 //            carGoTo(1,line);
-//            mySleep(PublicData.midTime);
+//        try {
+//            sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //            carGoTo(0,line);
 //        }else {
 //            carGoTo(3,line);
-//            mySleep(PublicData.midTime);
+//        try {
+//            sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //            carGoTo(4,line);
 //        }
     }
@@ -254,7 +287,11 @@ public class Car extends Thread {
      */
     private void waitHandleAndOut() {
 //        while (true) {
-//            mySleep(PublicData.midTime);
+//        try {
+//            sleep(1000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
 //            System.err.println("不讲道理啊! ????:"+carHeadY);
 //            if (beenHandled) {
 //                System.err.println("zheline ????:"+carHeadY);
@@ -266,36 +303,20 @@ public class Car extends Thread {
 //                }
 //            }
 //        }
-        try {
-            synchronized (this) {
-                wait();
-                while (!moveToRearDoor()) {
-                    exponentialBackoff();
-                }
-                if (park.out(this)) {
-                    leavePark();
-                }
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while (!moveToRearDoor()) {
+            exponentialBackoff();
+        }
+        if (park.out(this)) {
+            leavePark();
         }
     }
 
     private void exponentialBackoff() {
-        mySleep((random.nextInt(3^conflictCount) % 600) * midTime);
-    }
-
-    /**
-     * 车辆从停车场的GUI中出现的时候,占据的是左上角的两个位置,称为UI初始化
-     */
-    private void initCarUI() {
-        carTailX = 0;
-        carTailY = 0;
-        carHeadX = 1;
-        carHeadY = 0;
-        park.setStatusFalse(carTailX, carTailY);
-        park.setStatusFalse(carHeadX, carHeadY);
-        publicData.getParkFrame().repaint();
+        try {
+            sleep((random.nextInt(3 ^ conflictCount) % 600) * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -306,7 +327,11 @@ public class Car extends Thread {
      */
     private boolean carGoTo(int x, int y) {
         while (true) {
-            mySleep(PublicData.midTime);
+            try {
+                sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             ++conflictCount;
             if (carUIGoTO(x, y)) {
                 conflictCount = 0;
@@ -316,32 +341,6 @@ public class Car extends Thread {
             if (conflictCount >= 5)
                 return false;
         }
-    }
-
-    private void carGoTo(LocationOfPark l) {
-        carGoTo(l.getX(), l.getY());
-    }
-
-    /**
-     * 让车辆后退一步,原来车尾的位置变成车头,目的位置是新车尾的位置.
-     *
-     * @param x 停车场的纵向位置,对应在之前的二维数组存储方式
-     * @param y 停车场的横向位置,对应在之前的二维数组存储方式
-     */
-    private void carBackTo(int x, int y) {
-        while (true) {
-            reverseCar();
-            mySleep(PublicData.midTime);
-            if (carUIGoTO(x, y)) {
-//                print.println(number+"号车到达"+"\tX="+x+"\tY="+y);
-                reverseCar();
-                break;
-            }
-        }
-    }
-
-    private void carBackTo(LocationOfPark l) {
-        carBackTo(l.getX(), l.getY());
     }
 
     /**
@@ -381,31 +380,6 @@ public class Car extends Thread {
     }
 
     /**
-     * 车辆线程的终点,用来使车辆消失
-     */
-    private void dropCar() {
-        park.setStatusTrue(carHeadX, carHeadY);
-        park.setStatusTrue(carTailX, carTailY);
-        carHeadX = -1;
-        carHeadY = -1;
-        carTailX = -1;
-        carTailY = -1;
-    }
-
-    /**
-     * 一个用来完成一段时间线程休眠的函数,封装了try,catch
-     *
-     * @param time
-     */
-    private void mySleep(int time) {
-        try {
-            sleep(time);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * 车辆经过工人处理后则标记为已经被处理过
      */
     public void handle() {
@@ -431,11 +405,5 @@ public class Car extends Thread {
      */
     public boolean isHandled() {
         return beenHandled;
-    }
-
-    public boolean atParkLocation() {
-        if (carHeadX == 0 || carHeadX == 4) {
-            return true;
-        } else return false;
     }
 }

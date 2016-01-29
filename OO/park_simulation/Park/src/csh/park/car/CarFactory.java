@@ -2,8 +2,7 @@ package csh.park.car;
 
 import csh.park.data.Employee;
 import csh.park.data.PublicData;
-import csh.park.parkWorker.FrontWorker;
-import csh.park.parkWorker.RearWorker;
+import csh.park.parkWorker.Worker;
 
 import java.util.Random;
 
@@ -13,14 +12,10 @@ import java.util.Random;
 public class CarFactory extends Thread{
     Random random;
     PublicData publicData;
-    FrontWorker frontWorker;
-    RearWorker rearWorker;
     public CarFactory() {
         this.publicData = PublicData.getPublicData();
-        frontWorker=new FrontWorker(publicData.getInError());
-        rearWorker=new RearWorker(publicData.getOutError());
-        frontWorker.start();
-        rearWorker.start();
+        Worker worker=new Worker(publicData.getOutError(),publicData.getInError());
+        worker.start();
         random=new Random();
     }
 
@@ -28,12 +23,11 @@ public class CarFactory extends Thread{
     public void run() {
         while (true){
             try {
-                sleep(10*PublicData.midTime);
+                sleep(10000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            if (publicData.getPark().getStatus(0,0)&&publicData.getPark().getStatus(1,0))
-                new Car(nextIn(),nextOut(),random.nextInt(300*PublicData.midTime)).start();
+            new Car(nextIn(),nextOut(),random.nextInt(300000)).start();
         }
     }
     private Employee temp;

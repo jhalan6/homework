@@ -4,10 +4,7 @@ import csh.park.car.Car;
 import csh.park.car.CarFactory;
 import csh.park.check.CheckIn;
 import csh.park.check.CheckOut;
-import csh.park.data.Employee;
 import csh.park.data.PublicData;
-import csh.park.parkWorker.FrontWorker;
-import csh.park.parkWorker.RearWorker;
 import csh.park.warning.Message;
 
 import java.util.ArrayList;
@@ -84,8 +81,8 @@ public class Park {
         try {
             return park[x][y];
         }catch (Exception e){
-            PublicData.print.println("x="+x+"\ty="+y);
-            PublicData.print.println(e);
+            System.err.println("x="+x+"\ty="+y);
+            System.err.println(e);
         }finally {
             return park[x][y];
         }
@@ -143,10 +140,10 @@ public class Park {
         }
     }
     public void carHadBeenIn(){
-        checkIn.carHadBeenLeaveBar();
+        checkIn.carHadBeenIn();
     }
     public void carHadBeenOut(){
-        checkOut.carHadBeenLeaveBar();
+        checkOut.carHadBeenOut();
     }
     /**
      * 用来返回停车场上限的一半这个数
