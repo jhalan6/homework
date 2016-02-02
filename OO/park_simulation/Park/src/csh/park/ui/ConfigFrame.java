@@ -1,32 +1,22 @@
 package csh.park.ui;
 
-import csh.park.actionListener.OkListener;
-import csh.park.actionListener.SaveListener;
+import csh.park.ui.actionListener.OkListener;
+import csh.park.ui.actionListener.SaveListener;
 import csh.park.data.PublicData;
 import csh.park.data.SimulationConfig;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
-import java.io.*;
 
 /**
+ * ConfigFrame类,实现了配置页面,用来实现初始化数据信息
  * Created by Alan on 15/12/9.
  */
 public class ConfigFrame extends JPanel{
-
-    public JFrame getjFrame() {
-        return jFrame;
-    }
-
-    public FrameParts getFrameParts(){
-        return frameParts;
-    }
-
     JFrame jFrame;
     JTextField textMaxEmployee, textMaxCar,textRateOfNotEmployee,textRateOfError;
     JButton btn_save,btn_ok;
-    ActionListener okListener,saveListener;
     SimulationConfig config;
     PublicData publicData;
     FrameParts frameParts;
@@ -36,6 +26,13 @@ public class ConfigFrame extends JPanel{
         this.publicData = PublicData.getPublicData();
         config= publicData.getConfig();
         initUI();//初始化UI
+    }
+   public JFrame getjFrame() {
+        return jFrame;
+    }
+
+    public FrameParts getFrameParts(){
+        return frameParts;
     }
 
     private void initUI() {
@@ -60,27 +57,23 @@ public class ConfigFrame extends JPanel{
         jFrame.add(textRateOfError);
         initText();
 
-        frameParts=new FrameParts(textMaxEmployee,textMaxCar,textRateOfNotEmployee,textRateOfError,jFrame);
+        frameParts=new FrameParts(textMaxEmployee,textMaxCar,textRateOfNotEmployee,textRateOfError);
 
         //初始化两个按钮
         btn_ok=new JButton("确定");
         btn_save=new JButton("保存");
-        //初始化两个监听器
-        okListener=new OkListener(this);
-        saveListener=new SaveListener(this);
 
         //绑定两个按钮
-        btn_ok.addActionListener(okListener);
-        btn_save.addActionListener(saveListener);
+        btn_ok.addActionListener(new OkListener(this));
+        btn_save.addActionListener(new SaveListener(this));
 
         //添加两个按钮
         jFrame.add(btn_ok);
         jFrame.add(btn_save);
 
-
         jFrame.setSize(430,280);
         jFrame.setResizable(false);// 设置不可调节大小
-        jFrame.setDefaultCloseOperation(3);// 设置关闭按钮
+        jFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);// 设置关闭按钮
         jFrame.setLocationRelativeTo(null);// 设置窗体居中
         setBackground(Color.white);// 设置面板背景为白色
         setSize(new Dimension(430,280));

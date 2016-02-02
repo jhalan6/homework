@@ -8,60 +8,48 @@ import csh.park.data.PublicData;
 import static csh.park.data.PublicData.*;
 
 /**
+ * Console类是一个控制台相关的程序,负责记录相对时间,剩余车位数,
  * Created by Alan on 15/12/9.
  */
 public class Console {
-
+    /**
+     * 内部维护的一个publicData引用
+     */
     private final PublicData publicData;
-    private final int maxCar;
+    /**
+     * 该参数总是与当前剩余容纳量一致
+     */
     private int remainCapability;
+    /**
+     * 维护的前门禁的引用
+     */
     private CheckIn checkIn;
+    /**
+     * 维护的后门禁的引用
+     */
     private CheckOut checkOut;
+    /**
+     * 所有已经进入停车场车辆的停车时间
+     */
     private long totalTime = 0;
+    /**
+     * 所有进入过停车场(不论是否出了停车场)的车辆
+     */
     private long totalCar = 0;
+    /**
+     * 当前的相对时间,数值为总时间除以单位时间
+     */
     private long relativeTime = 0;
 
     public Console() {
-        this.publicData = PublicData.getPublicData();
-        maxCar = publicData.getConfig().getMaxCar();
-        remainCapability = maxCar;
+        publicData = PublicData.getPublicData();
+        remainCapability = publicData.getConfig().getMaxCar();
         checkIn = publicData.getPark().getCheckIn();
         checkOut = publicData.getPark().getCheckOut();
         //这里的一个线程用来完成计时,计数,输出日志的功能.
-        new Thread() {
-            @Override
-            public void run() {
-                super.run();
-                try {
-                    sleep(3*PublicData.midTime);
-                    relativeTime+=3;
-                    while (true) {
-                        sleep(PublicData.midTime);
-                        relativeTime++;
-                        publicData.getParkFrame().repaint();
-                        if (relativeTime % 60 == 0) {
-                            System.out.println("第" + relativeTime / 60 + "次定时报告:");
-                            System.out.println("\t截止目前本次仿真累计入场车数:" + totalCar);
-                            System.out.println("\t截止目前本次仿真累计出场车数:" + (totalCar - 10 + remainCapability));
-                            if (totalCar != 0)
-                                System.out.println("\t截至目前本次仿真汽车的平均停车时间" + totalTime / (totalCar * PublicData.midTime) + "s");
-                            else
-                                System.out.println("\t截至目前本次仿真汽车的平均停车时间" + 0);
-                            print.println("第" + relativeTime / 60 + "次定时报告:");
-                            print.println("\t截止目前本次仿真累计入场车数:" + totalCar);
-                            print.println("\t截止目前本次仿真累计出场车数:" + (totalCar - 10 + remainCapability));
-                            if (totalCar != 0)
-                                print.println("\t截至目前本次仿真汽车的平均停车时间" + totalTime / (totalCar * PublicData.midTime) + "s");
-                            else
-                                print.println("\t截至目前本次仿真汽车的平均停车时间" + 0);
-                        }
-                    }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        }.start();
+        createCountAndLogThread();
     }
+
 
     /**
      * 车辆离开后更新剩余车位数
@@ -127,6 +115,25 @@ public class Console {
     }
 
     /**
+     * 重写toString方法
+     *
+     * @return 控制台相关的数据集合
+     */
+    @Override
+    public String toString() {
+        return relativeTimeToString() + frontDoorToString() + relativeTimeToString() + rearDoorToString();
+    }
+
+    /**
+     * 用来查看当前的剩余容纳量
+     *
+     * @return 剩余车位数
+     */
+    public int getLeft() {
+        return remainCapability;
+    }
+
+    /**
      * 根据CheckID类的属性识别出校验状态信息
      *
      * @param checkIn       前后门禁之一
@@ -145,16 +152,44 @@ public class Console {
         }
     }
 
-    @Override
-    public String toString() {
-        StringBuilder stringBuilder = new StringBuilder("前门状态:");
-        readDoorStatus(checkIn, stringBuilder);
-        stringBuilder.append("\t车位剩余:" + remainCapability + "\t后门状态:");
-        readDoorStatus(checkOut, stringBuilder);
-        return stringBuilder.toString();
-    }
+    /**
+     * 这个方法创建了一个进行报告并且定时更新停车场控制台信息的线程
+     * 方法中用了很多System.out.println的方法.这里的System.out在PublicData中进行过重置,是输出到日志文件中的方法
+     */
+    private void createCountAndLogThread() {
+        new Thread() {
+            @Override
+            public void run() {
+                super.run();
+                try {
+                    sleep(2 * MID_TIME);
+                    relativeTime += 2;
+                    while (true) {
+                        //每一个单位时间相对时间要+1
+                        sleep(MID_TIME);
+                        relativeTime++;
+                        publicData.getParkFrame().repaint();
+                        if (relativeTime % 60 == 0) {
+                            System.out.println("第" + relativeTime / 60 + "次定时报告:");
+                            System.out.println("\t截止目前本次仿真累计入场车数:" + totalCar);
+                            System.out.println("\t截止目前本次仿真累计出场车数:" + (totalCar - 10 + remainCapability));
 
-    public int getLeft() {
-        return remainCapability;
+                            //避免当前车辆数是0,造成除数为0
+                            System.out.println("\t截至目前本次仿真汽车的平均停车时间" + (totalCar != 0 ? (totalTime / (totalCar * MID_TIME)) : 0) + "s");
+
+                            print.println("第" + relativeTime / 60 + "次定时报告:");
+                            print.println("\t截止目前本次仿真累计入场车数:" + totalCar);
+                            print.println("\t截止目前本次仿真累计出场车数:" + (totalCar - 10 + remainCapability));
+                            if (totalCar != 0)
+                                print.println("\t截至目前本次仿真汽车的平均停车时间" + totalTime / (totalCar * MID_TIME) + "s");
+                            else
+                                print.println("\t截至目前本次仿真汽车的平均停车时间" + 0);
+                        }
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 }
