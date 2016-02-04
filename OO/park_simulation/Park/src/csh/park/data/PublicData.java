@@ -9,7 +9,11 @@ import csh.park.warning.Message;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.sql.Time;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by Alan on 15/12/9.
@@ -19,7 +23,7 @@ public class PublicData {
     /**
      * 调试的关键参数,MID_TIME是单位时间,标准时间的话将其设置为1000,即为1000ms一个间隔,调试时可以设的小一些方便观察实验结果
      */
-    public static final int MID_TIME =50;
+    public static final int MID_TIME =100;
     /**
      * 因将默认的print设置为输出到日志文件中,所以在PublicData 中维持这个引用,用来输出到控制台
      */
@@ -51,7 +55,9 @@ public class PublicData {
         print=System.out;
         File outputFile;
         try {
-            outputFile = new File("//tmp//Simulation.log");
+            Date date=new Date();
+            SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyyMMdd-hhmmss");
+            outputFile = new File("//tmp//"+ simpleDateFormat.format(date)+".rpt");
             System.setOut(new PrintStream(outputFile));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
