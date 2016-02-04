@@ -4,6 +4,9 @@
     <exclude-output />
     <content url="file://$MODULE_DIR$">
       <sourceFolder url="file://$MODULE_DIR$/First" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/park_simulation/Park/src" isTestSource="false" />
+      <excludeFolder url="file://$MODULE_DIR$/park_simulation/Park/out" />
+      <excludeFolder url="file://$MODULE_DIR$/park_simulation/Park/src/test/csh/park" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

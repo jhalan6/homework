@@ -1,14 +1,15 @@
 package csh.park.ui;
 
 import javax.swing.*;
-import java.awt.*;
 
+/**
+ * FameParts类,仅仅是为了初始化SimulationConfig对象时可以更加方便而设置的,并不具有实际作用,仅保存一些Config页面控件的引用
+ */
 public class FrameParts{
     JTextField textMaxEmployee;
     JTextField textMaxCar;
     JTextField textRateOfNotEmployee;
     JTextField textRateOfError;
-    JFrame jFrame;
 
     public JTextField getTextRateOfError() {
         return textRateOfError;
@@ -26,15 +27,10 @@ public class FrameParts{
         return textRateOfNotEmployee;
     }
 
-    public FrameParts(JTextField textMaxEmployee, JTextField textMaxCar, JTextField textRateOfNotEmployee, JTextField textRateOfError,JFrame jFrame) {
+    public FrameParts(JTextField textMaxEmployee, JTextField textMaxCar, JTextField textRateOfNotEmployee, JTextField textRateOfError) {
         this.textMaxEmployee = textMaxEmployee;
         this.textMaxCar = textMaxCar;
         this.textRateOfNotEmployee = textRateOfNotEmployee;
         this.textRateOfError = textRateOfError;
-        this.jFrame=jFrame;
-    }
-
-    public JFrame getjFrame() {
-        return jFrame;
     }
 }

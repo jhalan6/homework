@@ -40,7 +40,7 @@
 //        modify();
 //    }
 //    public void powerOff(){
-//        power.off();
+//        power.close();
 //        modify();
 //    }
 //    //实现亮度可调节台灯的开关功能
@@ -49,7 +49,7 @@
 //        modify();
 //    }
 //    public void buttonOff(){
-//        button.off();
+//        button.close();
 //        modify();
 //    }
 //    //实现亮度可调节台灯的调节部分
@@ -67,7 +67,7 @@
 //        if(power.isOn()&&button.isOn()&&knob!=0){
 //            lamp.atBright(knob.getScale());
 //        }else{
-//            lamp.off();
+//            lamp.close();
 //            System.out.println("台灯没亮");
 //        }
 //    }

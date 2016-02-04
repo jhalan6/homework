@@ -1,4 +1,4 @@
-package csh.park.actionListener;
+package csh.park.ui.actionListener;
 
 import csh.park.data.SimulationConfig;
 import csh.park.ui.ConfigFrame;
@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 
 /**
+ * SaveListener实现了保存按钮的事件监听器,将配置文件保存到了/temp/SimulationOfPark.config文件中
+ * 该文件夹是OSX下的一个临时文件夹,重新启动将导致当前配置失效
  * Created by Alan on 15/12/10.
  */
 public class SaveListener extends ConfigListener {
@@ -20,8 +22,7 @@ public class SaveListener extends ConfigListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        SimulationConfig config=SimulationConfig.getConfig();
-            config.setSimulationConfig(frameParts);
+        config.setSimulationConfig(frameParts);
         try {
             ObjectOutputStream output = new ObjectOutputStream(new FileOutputStream("/tmp/SimulationOfPark.config"));
             output.writeObject(config);
